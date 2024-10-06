@@ -7,15 +7,26 @@
 
 using namespace std;
 
+// 创建K大小的小顶堆 pop出的是小的元素，大的元素留在堆中
+
+
+
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) 
 	{
+		//统计元素与元素频率
 		unordered_map<int, int> umap;
 		for(int i = 0; i < nums.size();i++)
-		{
 			umap[nums[i]]++;
-		}
+		
+		
+		
+		
+		priority_queue<> 
+		
+		
+
 		cout << umap[3];
     }
 };
