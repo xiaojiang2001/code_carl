@@ -69,6 +69,35 @@ public:
 		
 		return pre;
 	}
+	
+	bool isPalindrome2(ListNode* head)
+	{
+		ListNode* fast = head;
+		ListNode* slow = head;
+		ListNode* pre = head;
+		
+		while(fast && fast->next){
+			pre = slow;
+			fast = fast->next->next;	// 快指针遍历到尾
+			slow = slow->next;			// 慢指针遍历到中间
+		}
+		//构造 cur1
+		ListNode* cur1 = head;
+		pre->next = nullptr;
+		
+		//构造 cur2
+		ListNode* cur2 = reverse(slow);
+		
+		while(cur1){
+			if(cur1->val != cur2->val){
+				return false;
+			}
+			cur1 = cur1->next;
+			cur2 = cur2->next;
+		}
+		return true;
+	}
+	
 };
 
 int main()
