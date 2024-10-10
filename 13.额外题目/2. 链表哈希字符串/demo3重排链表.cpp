@@ -2,7 +2,6 @@
 #include <vector>
 #include <deque>
 
-
 using namespace std;
 
 struct ListNode{
@@ -97,10 +96,6 @@ public:
 		}
 		return pre;
 	} 
-	
-	
-	
-	
 };
 
 int main()

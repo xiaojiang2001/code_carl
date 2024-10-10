@@ -81,11 +81,6 @@ void insert(ListNode* head, int val, int idx)
 }
 
 
-
-
-
-
-
 int main()
 {
 	ListNode *head = creat();
@@ -93,14 +88,12 @@ int main()
 	
 	push_back(head,1);
 	push_back(head,2);
-	push_back(head,2);
-	push_back(head,1);
+	//push_back(head,3);
 //	cout << head->val << endl;
 //	cout << head->next->val << endl;
 	
-	bool res = isPalindrome(head->next);
-	cout << res;
-	//show_link(head->next);
+	ListNode* newHead = removeNthFromEnd(head->next,2);
+	show_link(newHead);
 	
 	return 0;
 }

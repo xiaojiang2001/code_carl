@@ -28,7 +28,6 @@ public:
 			cur->next->next = temp2;					// 步骤二
 			cur->next->next->next = temp3;				// 步骤三
 			
-			
 			cur = cur->next->next;		// cur移动两位，准备下一轮交换
 		}
 		return dummyHead->next;
