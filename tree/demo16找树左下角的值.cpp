@@ -16,34 +16,14 @@ TreeNode* init_tree();
 vector<vector<int>> levelOrder(TreeNode* root);
 void showDoubleVec(vector<vector<int>>& vecs);
 
-// 核心算法
-int getHeigh(TreeNode* root)
+// 一看就可以用层序遍历 
+int traversal(TreeNode* root)
 {
-    if (root == nullptr) {
-        return 0;
-    }
-    // 获取左右子树高度
-    int leftHeigh  = getHeigh(root->left);
-    int rightHeigh = getHeigh(root->right);
-    // 有一边高度为-1 返回 表示不平衡了
-    if (leftHeigh == -1 || rightHeigh == -1){
-        return -1;
-    }
-    // 如果左右高度差 > 1    不平衡了
-    if (abs(leftHeigh - rightHeigh) > 1)
-        return -1;
-    // 返回高度
-    return max(leftHeigh, rightHeigh) + 1;
+    
 }
 
-bool isBalanced(TreeNode* root) {
-    if (root == nullptr){
-        return true;
-    }
-    // 计算树的高度
-    int res = getHeigh(root);
-    if (res == -1)  return false;
-    return true;
+int findBottomLeftValue(TreeNode* root) {
+
 }
 
 int main()
@@ -51,20 +31,21 @@ int main()
     TreeNode* root = init_tree();
     //vector<vector<int>> src = levelOrder(root);
     //showDoubleVec(src);
-    bool res = isBalanced(root);
+    int res = findBottomLeftValue(root);
     cout << res << endl;
+
     return 0;
 }
 
 TreeNode* init_tree()
 {
-    TreeNode* root = new TreeNode(1);
-    // root->left  = new TreeNode(2);
-    root->right = new TreeNode(3);
-    // root->left ->left  = new TreeNode(4);
+    TreeNode* root = new TreeNode(3);
+    root->left  = new TreeNode(9);
+    root->right = new TreeNode(20);
+    // root->left ->left  = new TreeNode(3);
     // root->left ->right = new TreeNode(5);
-    // root->right->left  = new TreeNode(6);
-    root->right->right = new TreeNode(9);
+    root->right->left  = new TreeNode(15);
+    root->right->right = new TreeNode(7);
     return root;
 }
 vector<vector<int>> levelOrder(TreeNode* root)
