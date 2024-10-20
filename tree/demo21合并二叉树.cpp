@@ -17,9 +17,27 @@ TreeNode* init_tree();
 vector<vector<int>> levelOrder(TreeNode* root);
 void showDoubleVec(vector<vector<int>>& vecs);
 
+
+// 把root2树合并到root1上
+TreeNode* traversal(TreeNode* root1, TreeNode* root2)
+{
+    // 遇到了空节点
+    if (root1 == nullptr)
+        return root2;
+    if (root2 == nullptr)
+        return root1;
+    
+    root1->val += root2->val;
+    root1->left = traversal(root1->left, root2->left);
+    root1->right = traversal(root1->right, root2->right);
+
+    return root1;
+}
+
 TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) 
 {
-    
+    TreeNode* res = traversal(root1,root2);
+    return res;
 }
 
 
