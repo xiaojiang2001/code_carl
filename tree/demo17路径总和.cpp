@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <algorithm>
+#include <numeric>
 
 using namespace std;
 
@@ -12,64 +14,51 @@ struct TreeNode{
 };
 
 
-
 // 通用功能函数
 TreeNode* init_tree();
 vector<vector<int>> levelOrder(TreeNode* root);
 void showDoubleVec(vector<vector<int>>& vecs);
 
-//本题需要有深度
-int maxDepth = -1;       // 记录二叉树最大深度
-int result;
-int traversal(TreeNode* root, int depth)
+
+// 回收所有可达路径
+vector<int> path;
+vector<vector<int>> res;
+void traversal(TreeNode* root)
 {
-    // 遍历到叶子节点了
+    //递归条件保存只递归非空节点
+    path.push_back(root->val);
+
+    // 到达叶子节点 回收结果
     if (root->left == nullptr && root->right == nullptr)
     {
-        // res保存的是新一轮更大深度的左边的第一个值
-        if (depth > maxDepth) {
-             maxDepth = depth;
-            result = root->val;
-        }
+        res.push_back(path);
+        return;
     }
-    // 处理左节点
-    if(root ->left){
-        depth++;
-        traversal(root->left, depth);
-        depth--;        // 回溯
+    // 未到达叶子节点
+    if (root->left) {
+        traversal(root->left);
+        path.pop_back();
     }
-
-    //处理右节点
     if (root->right){
-        depth++;
-        traversal(root->right,depth);
-        depth--;
+        traversal(root->right);
+        path.pop_back();
     }
-    return result;
 }
 
-int findBottomLeftValue2(TreeNode* root) {
-    int ret = traversal(root, 1);
-    return ret;
-}
-// 一看就可以用层序遍历 
-int findBottomLeftValue(TreeNode* root) {
-    int res;
-    queue<TreeNode*> que;
-    que.push(root);
-    while (!que.empty())
+bool hasPathSum(TreeNode* root, int targetSum) {
+    if (root == nullptr)
+        return false;
+
+    
+    traversal(root);
+    // 计算所有路径的和
+    for (auto path: res)
     {
-        int size = que.size();
-        res = que.front()->val;
-        for (int i = 0; i < size; i++)
-        {
-            TreeNode* node = que.front();
-            if (node->left )    que.push(node->left);
-            if (node->right )   que.push(node->right);
-            que.pop();
-        }
+        int pathSum = accumulate(path.begin(), path.end(), 0);
+        if (pathSum == targetSum)
+            return true;
     }
-    return res;
+    return false;
 }
 
 int main()
@@ -77,9 +66,9 @@ int main()
     TreeNode* root = init_tree();
     //vector<vector<int>> src = levelOrder(root);
     //showDoubleVec(src);
-    int res = findBottomLeftValue(root);
+    int targetSum = 22;  
+    bool res = hasPathSum(root,targetSum);
     cout << res << endl;
-
     return 0;
 }
 

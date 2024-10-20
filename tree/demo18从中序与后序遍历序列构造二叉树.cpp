@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <algorithm>
+#include <numeric>
 
 using namespace std;
 
@@ -12,74 +14,53 @@ struct TreeNode{
 };
 
 
-
 // 通用功能函数
 TreeNode* init_tree();
 vector<vector<int>> levelOrder(TreeNode* root);
 void showDoubleVec(vector<vector<int>>& vecs);
 
-//本题需要有深度
-int maxDepth = -1;       // 记录二叉树最大深度
-int result;
-int traversal(TreeNode* root, int depth)
+TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) 
 {
-    // 遍历到叶子节点了
-    if (root->left == nullptr && root->right == nullptr)
-    {
-        // res保存的是新一轮更大深度的左边的第一个值
-        if (depth > maxDepth) {
-             maxDepth = depth;
-            result = root->val;
-        }
-    }
-    // 处理左节点
-    if(root ->left){
-        depth++;
-        traversal(root->left, depth);
-        depth--;        // 回溯
-    }
+    // 1. 后续遍历为空 空节点
+    if (postorder.size() == 0)
+        return nullptr;
 
-    //处理右节点
-    if (root->right){
-        depth++;
-        traversal(root->right,depth);
-        depth--;
-    }
-    return result;
-}
+    // 2. 获取根节点数据（后续遍历的最后一个元素） 
+    int midNum = postorder[postorder.size() - 1];
+    TreeNode* root = new TreeNode(midNum);
 
-int findBottomLeftValue2(TreeNode* root) {
-    int ret = traversal(root, 1);
-    return ret;
-}
-// 一看就可以用层序遍历 
-int findBottomLeftValue(TreeNode* root) {
-    int res;
-    queue<TreeNode*> que;
-    que.push(root);
-    while (!que.empty())
-    {
-        int size = que.size();
-        res = que.front()->val;
-        for (int i = 0; i < size; i++)
-        {
-            TreeNode* node = que.front();
-            if (node->left )    que.push(node->left);
-            if (node->right )   que.push(node->right);
-            que.pop();
-        }
-    }
-    return res;
-}
+    // 3. 查找根节点在中序遍历中的位置 
+    int midIdx = find(inorder.begin(), inorder.end(), midNum) - inorder.begin();
 
+    // 4. 根据根节点位置 将中序遍历数组 切割成左右子树
+    vector<int> leftInorder (inorder.begin(), inorder.begin() + midIdx);
+    vector<int> rightinorder(inorder.begin() + midIdx + 1, inorder.end());
+
+    // 获取左右子树长度
+    int size1 = leftInorder.size();
+    int size2 = rightinorder.size();
+
+    // 5. 切割后续遍历的左右子树
+    vector<int> leftPostOrder (postorder.begin(), postorder.begin() + size1);
+    vector<int> rightPostOrder(postorder.begin() + size1, postorder.begin() + size1 + size2);
+
+    // 6. 递归创建左右子树
+    root->left  = buildTree(leftInorder, leftPostOrder);
+    root->right = buildTree(rightinorder, rightPostOrder);
+
+    return root;
+}
 int main()
 {
     TreeNode* root = init_tree();
-    //vector<vector<int>> src = levelOrder(root);
-    //showDoubleVec(src);
-    int res = findBottomLeftValue(root);
-    cout << res << endl;
-
+    vector<vector<int>> src = levelOrder(root);
+    showDoubleVec(src);
+    vector<int> inorder{9,3,15,20,7};
+    vector<int> postorder{9,15,7,20,3};
+    TreeNode* newTree = buildTree(inorder,postorder);
+    
+    vector<vector<int>> dst = levelOrder(newTree);
+    showDoubleVec(dst);
     return 0;
 }
 
