@@ -88,9 +88,9 @@ void posOrder(TreeNode* root)
 
 
 // 二叉树的层序遍历
-/*
 
 //二叉树的迭代前序遍历
+/*
  vector<int> preOrder(TreeNode* root)
  {
     stack<TreeNode*> st;
@@ -165,6 +165,51 @@ void posOrder(TreeNode* root)
 }
 */
 
+
+
+// 迭代遍历复习
+void preOrder(TreeNode* root)
+{
+    if (root == nullptr)
+        return;
+    stack<TreeNode*> st;
+    st.push(root);
+    while (!st.empty())
+    {
+        TreeNode* node = st.top();
+        st.pop();
+        cout << node->val;     // 中
+        if (node->right)    st.push(node->right);
+        if (node->left)     st.push(node->left);    
+    } 
+    return;
+}
+
+void inOrder(TreeNode* root)
+{
+    if (root == nullptr)
+        return;
+    stack<TreeNode*> st;
+    TreeNode* cur = root;
+    while (cur != nullptr || !st.empty())
+    {
+        // 处理最左边节点
+        if (cur != nullptr) {       // 指针来访问节点 访问到最底层
+            st.push(cur);           // 每次访问节点入栈
+            cur = cur->left;        // 左
+        }
+        else
+        {
+            cur = st.top();         //从栈里弹出的数据，就是要处理的数据(放进result数组里的数据)
+            st.pop();
+            cout << cur->val;       // 中
+            cur = cur->right;       // 右
+        }        
+    }
+    return;
+}
+
+
 vector<vector<int>> levelOrder(TreeNode* root) 
 {
     vector<vector<int>> res;
@@ -210,6 +255,16 @@ int main()
         cout << endl;
     }
     cout << endl;
+
+    cout << "preOrder" << endl;
+    preOrder(root);
+    cout << endl;
+
+
+    cout << "inOrder" << endl;
+    inOrder(root);
+    cout << endl;
+
     deleteTree(root);   // 释放内存    
     return 0;   
 }
