@@ -17,45 +17,26 @@ struct TreeNode{
 TreeNode* init_tree();
 vector<vector<int>> levelOrder(TreeNode* root);
 void showDoubleVec(vector<vector<int>>& vecs);
-
-TreeNode* deleteNode(TreeNode* root, int key) 
+    
+    
+TreeNode* trimBST(TreeNode* root, int low, int high) 
 {
     if (root == nullptr)
         return nullptr;
 
-    // 找到删除的节点
-    if (root->val == key)
-    {
-        if(root->left == nullptr &&  root->right == nullptr) {
-            delete root;
-            return nullptr;
-        }
-        else if(root->left == nullptr && root->right != nullptr) {
-            return root->right;
-        }
-        else if (root->left != nullptr && root->right == nullptr) {
-            return root->left;
-        }
-        // 左右都不为空 将左子树挂到右子树的最左下角
-        else    
-        {
-            TreeNode* cur = root->right;
-            TreeNode* pre = nullptr;
-            while (cur) {
-                pre = cur;
-                cur = cur->left;
-            }
-            pre->left = root->left;
-            return root->right;
-        }
+    TreeNode* pre = root;
+    // 递归遍历左右子树
+    if (root->val >= low && root->val <= high) {
+        root->left = trimBST(root->left, low, high);
+        root->right = trimBST(root->right, low, high);
     }
-
-    // 单层递归逻辑
-    if (root->val > key)        // 左
-        root->left = deleteNode(root->left, key);
-    else if (root->val < key)   // 右
-        root->right = deleteNode(root->right, key);
-    return root;
+    // 左
+    if (root->val < low)
+        return trimBST(root->right, low, high);
+    // 右
+    else if (root->val > high)
+        return trimBST(root->left, low, high);
+    return root;    
 }
 
 int main()
@@ -63,8 +44,9 @@ int main()
     TreeNode* root = init_tree();
     vector<vector<int>> src = levelOrder(root);
     showDoubleVec(src);
-    int key = 3;
-    TreeNode* resRoot = deleteNode(root,key);
+    int low = 1;
+    int heigh = 3;
+    TreeNode* resRoot = trimBST(root, low, heigh);
     vector<vector<int>> res = levelOrder(resRoot);
     showDoubleVec(res);
     cout << endl;
@@ -73,14 +55,14 @@ int main()
 
 TreeNode* init_tree()
 {
-    TreeNode* root = new TreeNode(5);
-    root->left  = new TreeNode(3);
-    root->right = new TreeNode(6);
-    root->left ->left  = new TreeNode(2);
-    root->left ->right = new TreeNode(4);
+    TreeNode* root = new TreeNode(3);
+    root->left  = new TreeNode(0);
+    root->right = new TreeNode(4);
+    //root->left ->left  = new TreeNode(2);
+    root->left ->right = new TreeNode(2);
     //root->right->left  = new TreeNode(2);
-    root->right->right = new TreeNode(7);
-    //root->left ->right->right = new TreeNode(1);
+    //root->right->right = new TreeNode(7);
+    root->left ->right->left = new TreeNode(1);
     return root;
 }
 vector<vector<int>> levelOrder(TreeNode* root)
