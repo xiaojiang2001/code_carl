@@ -30,7 +30,8 @@ void backtracking(vector<int>& nums, int startIdx)
         // 递归 
         backtracking(nums, i + 1);      
         // 回溯
-        path.pop_back();             
+        path.pop_back();
+        uset.erase(nums[i]);   
     }
     return;
 }
