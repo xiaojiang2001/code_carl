@@ -13,11 +13,14 @@ int longestCommonSubsequence(string text1, string text2)
     {
         for (int j = 1; j <= text2.size(); j++)
         {
-            
+            // 相等
+            if(text1[i-1] == text2[j-1])
+                dp[i][j] = dp[i-1][j-1] + 1;
+            else    // 不相等
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
         }
     }
-    
-
+    return dp[text1.size()][text2.size()];
 }
 
 
