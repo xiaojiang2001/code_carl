@@ -42,6 +42,7 @@ int main()
             cin >> grid[i][j];
         }
     }
+    
     // 记录每个格子的访问情况
     int res = 0;
     vector<vector<bool>> visited(n, vector<bool>(m, false));
