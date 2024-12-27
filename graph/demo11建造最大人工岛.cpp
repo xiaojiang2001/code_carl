@@ -6,20 +6,26 @@
 
 using namespace std;
 
-// 当前岛屿的面积
-int area = 0;  
+
+int area = 0;       // 当前岛屿的面积
+int idx = 2;        // 标记陆地的起始下标
+
+// 四个方向
 int dir[4][2] = {1, 0, 0, 1, -1, 0, 0, -1};
-// 标记陆地的起始下标
-int idx = 2;                   
+
+//  计算每一块岛屿的面积                
 void dfs(vector<vector<int>>& grid, int x, int y)
 {
     grid[x][y] = idx;
     for (int i = 0; i < 4; i++)
     {
+        // 遍历四周
         int nextx = x + dir[i][0];
         int nexty = y + dir[i][1];
+        // 越界
         if(nextx < 0 || nextx >= grid.size() || nexty < 0 || nexty >= grid[0].size())
             continue;
+        // 周围是陆地
         if(grid[nextx][nexty] == 1) {
             area++;
             dfs(grid, nextx, nexty);
@@ -30,17 +36,17 @@ void dfs(vector<vector<int>>& grid, int x, int y)
 
 int main()
 {
+    // 输入
     int n,m;
     cin >> n >> m;
     vector<vector<int>> grid(n, vector<int>(m, 0));
-
     for (int i = 0; i < n; i++) {
         for(int j = 0; j < m; j++) {
             cin >> grid[i][j];
         } 
     }
 
-    // 是否全部陆地
+    // 是否全部陆地标记
     bool flag = true;
     // 1. 计算每一块岛屿的面积，并做map标记
     unordered_map<int, int> umap;
@@ -67,7 +73,6 @@ int main()
         return 0;
     }
         
-
     int res = 0;
     unordered_set<int> uset;
     // 2. 遍历地图，遍历0的方格，并统计该1(0转1)周边岛屿面积，将其相邻面积相加在一起
