@@ -92,8 +92,8 @@ int main()
 //	cout << head->val << endl;
 //	cout << head->next->val << endl;
 	
-	ListNode* newHead = removeNthFromEnd(head->next,2);
-	show_link(newHead);
+	// ListNode* newHead = removeNthFromEnd(head->next,2);
+	// show_link(newHead);
 	
 	return 0;
 }
