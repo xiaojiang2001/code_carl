@@ -29,7 +29,6 @@ TreeNode* initTree()
     return root;  
 }  
 
-
 // 创建二叉树
 TreeNode* createTree()
 {
