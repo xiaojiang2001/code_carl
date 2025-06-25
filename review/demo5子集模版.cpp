@@ -70,6 +70,7 @@ void print_vec(const vector<vector<int>>& vec)
         cout << endl;
     }  
 }
+
 int main()
 {
     vector<int> nums{1,2,2};
