@@ -91,6 +91,7 @@ int findLengthOfLCIS(vector<int>& nums) {
     return res;
 }
 
+
 // 3. 最大子序和
 // 思路1：一眼贪心 加到负数则舍弃之前的累加值（贪心）
 int maxSubArray(vector<int>& nums) {
@@ -116,6 +117,7 @@ int maxSubArray(vector<int>& nums) {
     }
     return *max_element(dp.begin(), dp.end());
 }
+
 
 // 4. 最长公共子序列
 int longestCommonSubsequence(string text1, string text2) {
